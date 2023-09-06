@@ -10,7 +10,7 @@
 
 FString USSMLBlueprintFunctionLibrary::GetSSMLDocumentOuterXml(const FSSMLDocument& SSMLDocument)
 {
-	UE_LOG(AzureTTS,Log,TEXT(__FUNCTION__));
+	 UE_LOG(AzureTTS, Log, TEXT("%s"), *FString(__FUNCTION__));
 
 	FString Result = "";
 	if(!SSMLDocument.XmlVersion.IsEmpty())
@@ -27,7 +27,7 @@ FString USSMLBlueprintFunctionLibrary::GetSSMLDocumentOuterXml(const FSSMLDocume
 
 FString USSMLBlueprintFunctionLibrary::GetSSMLElementNodeOuterXml(const FSSMLElementNode& SSMLElementNode)
 {
-	UE_LOG(AzureTTS,Log,TEXT(__FUNCTION__));
+	 UE_LOG(AzureTTS, Log, TEXT("%s"), *FString(__FUNCTION__));
 
 	if(SSMLElementNode.ElementType == ESSMLElementType::PlainText)
 		return SSMLElementNode.InnerXml;
@@ -53,7 +53,8 @@ FString USSMLBlueprintFunctionLibrary::GetSSMLElementNodeOuterXml(const FSSMLEle
 		bClosedTag = true;
 	
 	/** Get Enum **/
-	const UEnum* EnumPtr = FindObject<UEnum>((UObject*)ANY_PACKAGE, TEXT("ESSMLElementType"), true);
+	UEnum* EnumPtr = nullptr;
+	FindObject<UEnum>((UObject*)EnumPtr, TEXT("ESSMLElementType"), true);
 	
 	/** Get element node tag **/
 	FString XmlTag = (EnumPtr->GetDisplayNameTextByValue(static_cast<int64>(SSMLElementNode.ElementType))).ToString().ToLower();
@@ -91,14 +92,14 @@ FString USSMLBlueprintFunctionLibrary::GetSSMLElementNodeOuterXml(const FSSMLEle
 FSSMLElementNode& USSMLBlueprintFunctionLibrary::AppendChildElementNode(UPARAM(ref) FSSMLElementNode& ParentNode,
 	const FSSMLElementNode& ChildNode)
 {
-	UE_LOG(AzureTTS,Log,TEXT(__FUNCTION__));
+	 UE_LOG(AzureTTS, Log, TEXT("%s"), *FString(__FUNCTION__));
 
 	return AppendChildElement(ParentNode,GetSSMLElementNodeOuterXml(ChildNode));
 }
 
 FSSMLElementNode& USSMLBlueprintFunctionLibrary::AppendChildElement(UPARAM(ref) FSSMLElementNode& ParentNode, const FString Content)
 {
-	UE_LOG(AzureTTS,Log,TEXT(__FUNCTION__));
+	 UE_LOG(AzureTTS, Log, TEXT("%s"), *FString(__FUNCTION__));
 
 	ParentNode.InnerXml.Append(Content);
 	return ParentNode;
@@ -107,7 +108,7 @@ FSSMLElementNode& USSMLBlueprintFunctionLibrary::AppendChildElement(UPARAM(ref) 
 FSSMLElementNode& USSMLBlueprintFunctionLibrary::AppendChildElementNodes(UPARAM(ref) FSSMLElementNode& ParentNode,
 	const TArray<FSSMLElementNode>& ChildElementNodes)
 {
-	UE_LOG(AzureTTS,Log,TEXT(__FUNCTION__));
+	 UE_LOG(AzureTTS, Log, TEXT("%s"), *FString(__FUNCTION__));
 
 	for (int i = 0; i < ChildElementNodes.Num(); ++i)
 	{
@@ -119,7 +120,7 @@ FSSMLElementNode& USSMLBlueprintFunctionLibrary::AppendChildElementNodes(UPARAM(
 FSSMLElementNode USSMLBlueprintFunctionLibrary::MakeSpeakElementNode(const FString InnerXml,
 	const FString XmlLang,  const FString Version, const FString XmlNs, const FString XmlNsMSTTS)
 {
-	UE_LOG(AzureTTS,Log,TEXT(__FUNCTION__));
+	 UE_LOG(AzureTTS, Log, TEXT("%s"), *FString(__FUNCTION__));
 
 	FSSMLElementNode SpeakElementNode;
 	SpeakElementNode.ElementType=ESSMLElementType::Speak;
@@ -142,7 +143,7 @@ FSSMLElementNode USSMLBlueprintFunctionLibrary::MakeSpeakElementNode(const FStri
 
 FSSMLElementNode USSMLBlueprintFunctionLibrary::MakeVoiceElementNode(const FString InnerXml,const FString Name)
 {
-	UE_LOG(AzureTTS,Log,TEXT(__FUNCTION__));
+	 UE_LOG(AzureTTS, Log, TEXT("%s"), *FString(__FUNCTION__));
 
 	FSSMLElementNode VoiceElementNode;
 	VoiceElementNode.ElementType=ESSMLElementType::Voice;
@@ -157,7 +158,7 @@ FSSMLElementNode USSMLBlueprintFunctionLibrary::MakeVoiceElementNode(const FStri
 FSSMLElementNode USSMLBlueprintFunctionLibrary::MakeMSTTSExpressAsElementNode(const FString InnerXml,
 	const FString Style, const FString StyleDegree, const FString Role)
 {
-	UE_LOG(AzureTTS,Log,TEXT(__FUNCTION__));
+	 UE_LOG(AzureTTS, Log, TEXT("%s"), *FString(__FUNCTION__));
 
 	FSSMLElementNode MSTTSExpressAsElementNode;
 	MSTTSExpressAsElementNode.ElementType=ESSMLElementType::MSTTS_Express_As;
@@ -175,7 +176,7 @@ FSSMLElementNode USSMLBlueprintFunctionLibrary::MakeMSTTSExpressAsElementNode(co
 
 FSSMLElementNode USSMLBlueprintFunctionLibrary::MakeLangElementNode(const FString InnerXml, const FString XmlLang)
 {
-	UE_LOG(AzureTTS,Log,TEXT(__FUNCTION__));
+	 UE_LOG(AzureTTS, Log, TEXT("%s"), *FString(__FUNCTION__));
 
 	FSSMLElementNode LangElementNode;
 	LangElementNode.ElementType=ESSMLElementType::Lang;
@@ -189,7 +190,7 @@ FSSMLElementNode USSMLBlueprintFunctionLibrary::MakeLangElementNode(const FStrin
 
 FSSMLElementNode USSMLBlueprintFunctionLibrary::MakeBreakElementNode(const ESSMLBreakStrength Strength,const FString Time)
 {
-	UE_LOG(AzureTTS,Log,TEXT(__FUNCTION__));
+	 UE_LOG(AzureTTS, Log, TEXT("%s"), *FString(__FUNCTION__));
 
 	FSSMLElementNode BreakElementNode;
 	BreakElementNode.ElementType=ESSMLElementType::Break;
@@ -228,13 +229,14 @@ FSSMLElementNode USSMLBlueprintFunctionLibrary::MakeBreakElementNode(const ESSML
 FSSMLElementNode USSMLBlueprintFunctionLibrary::MakeMSTTSSilenceElementNode(const ESSMLSilenceType SilenceType,
 	const FString Value)
 {
-	UE_LOG(AzureTTS,Log,TEXT(__FUNCTION__));
+	 UE_LOG(AzureTTS, Log, TEXT("%s"), *FString(__FUNCTION__));
 
 	FSSMLElementNode MSTTSSilenceElementNode;
 	MSTTSSilenceElementNode.ElementType=ESSMLElementType::MSTTS_Silence;
 
 	/** Get Enum **/
-	const UEnum* EnumPtr = FindObject<UEnum>((UObject*)ANY_PACKAGE, TEXT("ESSMLSilenceType"), true);
+	UEnum* EnumPtr = nullptr;
+	FindObject<UEnum>((UObject*)EnumPtr, TEXT("ESSMLSilenceType"), true);
 	FString Type = (EnumPtr->GetDisplayNameTextByValue(static_cast<int64>(SilenceType))).ToString().ToLower();
 	MSTTSSilenceElementNode.Properties.Add("type",Type);
 	MSTTSSilenceElementNode.Properties.Add("value",Value);
@@ -244,7 +246,7 @@ FSSMLElementNode USSMLBlueprintFunctionLibrary::MakeMSTTSSilenceElementNode(cons
 
 FSSMLElementNode USSMLBlueprintFunctionLibrary::MakePElementNode(const FString InnerXml)
 {
-	UE_LOG(AzureTTS,Log,TEXT(__FUNCTION__));
+	 UE_LOG(AzureTTS, Log, TEXT("%s"), *FString(__FUNCTION__));
 
 	FSSMLElementNode PElementNode;
 	PElementNode.ElementType=ESSMLElementType::P;
@@ -255,7 +257,7 @@ FSSMLElementNode USSMLBlueprintFunctionLibrary::MakePElementNode(const FString I
 
 FSSMLElementNode USSMLBlueprintFunctionLibrary::MakeSElementNode(const FString InnerXml)
 {
-	UE_LOG(AzureTTS,Log,TEXT(__FUNCTION__));
+	 UE_LOG(AzureTTS, Log, TEXT("%s"), *FString(__FUNCTION__));
 
 	FSSMLElementNode SElementNode;
 	SElementNode.ElementType=ESSMLElementType::S;
@@ -267,12 +269,13 @@ FSSMLElementNode USSMLBlueprintFunctionLibrary::MakeSElementNode(const FString I
 FSSMLElementNode USSMLBlueprintFunctionLibrary::MakePhonemeElementNode(const FString InnerXml,
 	const ESSMLPhonemeAlphabetType PhonemeAlphabetType, const FString Ph)
 {
-	UE_LOG(AzureTTS,Log,TEXT(__FUNCTION__));
+	 UE_LOG(AzureTTS, Log, TEXT("%s"), *FString(__FUNCTION__));
 
 	FSSMLElementNode PhonemeElementNode;
 	PhonemeElementNode.ElementType=ESSMLElementType::Phoneme;
 	PhonemeElementNode.InnerXml = InnerXml;
-	const UEnum* EnumPtr = FindObject<UEnum>((UObject*)ANY_PACKAGE, TEXT("ESSMLPhonemeAlphabetType"), true);
+	UEnum* EnumPtr = nullptr;
+	FindObject<UEnum>((UObject*)EnumPtr, TEXT("ESSMLPhonemeAlphabetType"), true);
 	const FString Alphabet = (EnumPtr->GetDisplayNameTextByValue(static_cast<int64>(PhonemeAlphabetType))).ToString().ToLower();
 	PhonemeElementNode.Properties.Add("alphabet",Alphabet);
 	PhonemeElementNode.Properties.Add("ph",Ph);
@@ -282,7 +285,7 @@ FSSMLElementNode USSMLBlueprintFunctionLibrary::MakePhonemeElementNode(const FSt
 
 FSSMLElementNode USSMLBlueprintFunctionLibrary::MakeLexiconElementNode(const FString Uri)
 {
-	UE_LOG(AzureTTS,Log,TEXT(__FUNCTION__));
+	 UE_LOG(AzureTTS, Log, TEXT("%s"), *FString(__FUNCTION__));
 
 	FSSMLElementNode LexiconElementNode;
 	LexiconElementNode.ElementType = ESSMLElementType::Lexicon;
@@ -294,7 +297,7 @@ FSSMLElementNode USSMLBlueprintFunctionLibrary::MakeLexiconElementNode(const FSt
 FSSMLElementNode USSMLBlueprintFunctionLibrary::MakeProsodyElementNode(const FString InnerXml, const FString Pitch,
 	const FString Contour, const FString Range, const FString Rate, const FString Duration, const FString Volume)
 {
-	UE_LOG(AzureTTS,Log,TEXT(__FUNCTION__));
+	 UE_LOG(AzureTTS, Log, TEXT("%s"), *FString(__FUNCTION__));
 
 	FSSMLElementNode ProsodyElementNode;
 	ProsodyElementNode.ElementType = ESSMLElementType::Prosody;
@@ -324,12 +327,13 @@ FSSMLElementNode USSMLBlueprintFunctionLibrary::MakeProsodyElementNode(const FSt
 FSSMLElementNode USSMLBlueprintFunctionLibrary::MakeSayAsElementNode(const FString InnerXml,
 	const ESSMLInterpretAsType InterpretAs, const FString Format, const FString Detail)
 {
-	UE_LOG(AzureTTS,Log,TEXT(__FUNCTION__));
+	 UE_LOG(AzureTTS, Log, TEXT("%s"), *FString(__FUNCTION__));
 
 	FSSMLElementNode SayAsElementNode;
 	SayAsElementNode.ElementType = ESSMLElementType::Say_As;
 	SayAsElementNode.InnerXml = InnerXml;
-	const UEnum* EnumPtr = FindObject<UEnum>((UObject*)ANY_PACKAGE, TEXT("ESSMLInterpretAsType"), true);
+	UEnum* EnumPtr = nullptr;
+	FindObject<UEnum>((UObject*)EnumPtr, TEXT("ESSMLInterpretAsType"), true);
 	const FString InterpretAsValue = (EnumPtr->GetDisplayNameTextByValue(static_cast<int64>(InterpretAs))).ToString().ToLower();
 	SayAsElementNode.Properties.Add("interpret-as",InterpretAsValue);
 	if(!Format.IsEmpty())
@@ -342,7 +346,7 @@ FSSMLElementNode USSMLBlueprintFunctionLibrary::MakeSayAsElementNode(const FStri
 
 FSSMLElementNode USSMLBlueprintFunctionLibrary::MakeAudioElementNode(const FString InnerXml,const FString Src)
 {
-	UE_LOG(AzureTTS,Log,TEXT(__FUNCTION__));
+	 UE_LOG(AzureTTS, Log, TEXT("%s"), *FString(__FUNCTION__));
 
 	FSSMLElementNode AudioElementNode;
 	AudioElementNode.ElementType = ESSMLElementType::Audio;
@@ -355,7 +359,7 @@ FSSMLElementNode USSMLBlueprintFunctionLibrary::MakeAudioElementNode(const FStri
 FSSMLElementNode USSMLBlueprintFunctionLibrary::MakeMSTTSBackgroundAudioElementNode(const FString Src, const int Volume,
 	const int FadeIn, const int FadeOut)
 {
-	UE_LOG(AzureTTS,Log,TEXT(__FUNCTION__));
+	 UE_LOG(AzureTTS, Log, TEXT("%s"), *FString(__FUNCTION__));
 
 	FSSMLElementNode MSTTSBackgroundAudioElementNode;
 	MSTTSBackgroundAudioElementNode.ElementType = ESSMLElementType::MSTTS_BackgroundAudio;
@@ -380,7 +384,7 @@ FSSMLElementNode USSMLBlueprintFunctionLibrary::MakeMSTTSBackgroundAudioElementN
 
 FSSMLElementNode USSMLBlueprintFunctionLibrary::MakeBookmarkElementNode(const FString Mark)
 {
-	UE_LOG(AzureTTS,Log,TEXT(__FUNCTION__));
+	 UE_LOG(AzureTTS, Log, TEXT("%s"), *FString(__FUNCTION__));
 
 	FSSMLElementNode BookmarkElementNode;
 	BookmarkElementNode.ElementType = ESSMLElementType::Bookmark;
@@ -390,7 +394,7 @@ FSSMLElementNode USSMLBlueprintFunctionLibrary::MakeBookmarkElementNode(const FS
 
 FSSMLElementNode USSMLBlueprintFunctionLibrary::MakePlainTextElementNode(const FString Content)
 {
-	UE_LOG(AzureTTS,Log,TEXT(__FUNCTION__));
+	 UE_LOG(AzureTTS, Log, TEXT("%s"), *FString(__FUNCTION__));
 	FSSMLElementNode PlainTextElementNode;
 	PlainTextElementNode.ElementType = ESSMLElementType::PlainText;
 	PlainTextElementNode.InnerXml = Content;

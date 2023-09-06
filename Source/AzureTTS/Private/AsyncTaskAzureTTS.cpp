@@ -12,7 +12,7 @@
 
 UAsyncTaskAzureTTS::UAsyncTaskAzureTTS(const FObjectInitializer& ObjectInitializer)
 {
-	UE_LOG(AzureTTS,Log,TEXT(__FUNCTION__));
+	UE_LOG(AzureTTS, Log, TEXT("%s"), *FString(__FUNCTION__));
 	if (HasAnyFlags(RF_ClassDefaultObject) == false)
 		AddToRoot();
 }
@@ -21,7 +21,7 @@ UAsyncTaskAzureTTS* UAsyncTaskAzureTTS::TTS(const EAzureAuthenticationMethod Aut
 	const FString AuthenticationValue, const FString Endpoint, const FString SSML,
 	const EAzureSpeechAudioOutputFormat AudioFormat)
 {
-	UE_LOG(AzureTTS,Log,TEXT(__FUNCTION__));
+	UE_LOG(AzureTTS, Log, TEXT("%s"), *FString(__FUNCTION__));
 	UAsyncTaskAzureTTS* RequestTask = NewObject<UAsyncTaskAzureTTS>();
 	RequestTask->Start(AuthenticationMethod, AuthenticationValue, Endpoint, SSML, AudioFormat);
 	return RequestTask;
@@ -30,14 +30,15 @@ UAsyncTaskAzureTTS* UAsyncTaskAzureTTS::TTS(const EAzureAuthenticationMethod Aut
 void UAsyncTaskAzureTTS::Start(const EAzureAuthenticationMethod AuthenticationMethod, const FString AuthenticationValue,
 	const FString Endpoint, const FString SSML, const EAzureSpeechAudioOutputFormat AudioFormat)
 {
-	UE_LOG(AzureTTS,Log,TEXT(__FUNCTION__));
+	UE_LOG(AzureTTS, Log, TEXT("%s"), *FString(__FUNCTION__));
 	TSharedRef<IHttpRequest, ESPMode::ThreadSafe> HttpRequest = FHttpModule::Get().CreateRequest();
 
 	HttpRequest->OnProcessRequestComplete().BindUObject(this, &UAsyncTaskAzureTTS::HandleRequest);
 	HttpRequest->SetURL(Endpoint);
 	HttpRequest->SetVerb(TEXT("POST"));
 	
-	const UEnum* EnumPtr = FindObject<UEnum>((UObject*)ANY_PACKAGE, TEXT("EAzureSpeechAudioOutputFormat"));
+	UEnum* EnumPtr = nullptr; 
+	FindObject<UEnum>((UObject*)EnumPtr, TEXT("EAzureSpeechAudioOutputFormat"));
 	const FString AudioFormatValue = (EnumPtr->GetDisplayNameTextByValue(static_cast<int64>(AudioFormat))).ToString().ToLower();
 	
 	HttpRequest->SetHeader(TEXT("X-Microsoft-OutputFormat"), AudioFormatValue);
@@ -75,7 +76,7 @@ void UAsyncTaskAzureTTS::Start(const EAzureAuthenticationMethod AuthenticationMe
 
 void UAsyncTaskAzureTTS::HandleRequest(FHttpRequestPtr HttpRequest, FHttpResponsePtr HttpResponse, bool bSuccess)
 {
-	UE_LOG(AzureTTS,Log,TEXT(__FUNCTION__));
+	UE_LOG(AzureTTS, Log, TEXT("%s"), *FString(__FUNCTION__));
 	RemoveFromRoot();
 	TArray<uint8> Data;
 

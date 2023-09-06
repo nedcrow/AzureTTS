@@ -11,7 +11,7 @@
 
 UAsyncTaskGetAzureTTSToken::UAsyncTaskGetAzureTTSToken(const FObjectInitializer& ObjectInitializer)
 {
-	UE_LOG(AzureTTS,Log,TEXT(__FUNCTION__));
+	UE_LOG(AzureTTS, Log, TEXT("%s"), *FString(__FUNCTION__));
 	if (HasAnyFlags(RF_ClassDefaultObject) == false)
 		AddToRoot();
 }
@@ -19,7 +19,7 @@ UAsyncTaskGetAzureTTSToken::UAsyncTaskGetAzureTTSToken(const FObjectInitializer&
 UAsyncTaskGetAzureTTSToken* UAsyncTaskGetAzureTTSToken::GetAzureTTSToken(const FString SubscriptionKey,
 	const FString IssueTokenEndpoint)
 {
-	UE_LOG(AzureTTS,Log,TEXT(__FUNCTION__));
+	UE_LOG(AzureTTS, Log, TEXT("%s"), *FString(__FUNCTION__));
 
 	UAsyncTaskGetAzureTTSToken* RequestTask = NewObject<UAsyncTaskGetAzureTTSToken>();
 	RequestTask->Start(SubscriptionKey, IssueTokenEndpoint);
@@ -28,7 +28,7 @@ UAsyncTaskGetAzureTTSToken* UAsyncTaskGetAzureTTSToken::GetAzureTTSToken(const F
 
 void UAsyncTaskGetAzureTTSToken::Start(FString SubscriptionKey, FString IssueTokenEndpoint)
 {
-	UE_LOG(AzureTTS,Log,TEXT(__FUNCTION__));
+	UE_LOG(AzureTTS, Log, TEXT("%s"), *FString(__FUNCTION__));
 
 	const TSharedRef<IHttpRequest, ESPMode::ThreadSafe> HttpRequest = FHttpModule::Get().CreateRequest();
 
@@ -44,7 +44,7 @@ void UAsyncTaskGetAzureTTSToken::Start(FString SubscriptionKey, FString IssueTok
 void UAsyncTaskGetAzureTTSToken::HandleRequest(FHttpRequestPtr HttpRequest, FHttpResponsePtr HttpResponse,
 	bool bSuccess)
 {
-	UE_LOG(AzureTTS,Log,TEXT(__FUNCTION__));
+	UE_LOG(AzureTTS, Log, TEXT("%s"), *FString(__FUNCTION__));
 	RemoveFromRoot();
 	if (!HttpResponse.IsValid())
 	{

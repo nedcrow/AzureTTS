@@ -12,7 +12,7 @@
 
 UAsyncTaskGetAzureVoiceList::UAsyncTaskGetAzureVoiceList(const FObjectInitializer& ObjectInitializer)
 {
-	UE_LOG(AzureTTS,Log,TEXT(__FUNCTION__));
+	UE_LOG(AzureTTS, Log, TEXT("%s"), *FString(__FUNCTION__));
 	if (HasAnyFlags(RF_ClassDefaultObject) == false)
 		AddToRoot();
 }
@@ -20,7 +20,7 @@ UAsyncTaskGetAzureVoiceList::UAsyncTaskGetAzureVoiceList(const FObjectInitialize
 UAsyncTaskGetAzureVoiceList* UAsyncTaskGetAzureVoiceList::GetAzureVoiceList(
 	const EAzureAuthenticationMethod AuthenticationMethod, const FString AuthenticationValue, const FString Endpoint)
 {
-	UE_LOG(AzureTTS,Log,TEXT(__FUNCTION__));
+	UE_LOG(AzureTTS, Log, TEXT("%s"), *FString(__FUNCTION__));
 	UAsyncTaskGetAzureVoiceList* RequestTask = NewObject<UAsyncTaskGetAzureVoiceList>();
 	RequestTask->Start(AuthenticationMethod, AuthenticationValue, Endpoint);
 	return RequestTask;
@@ -29,7 +29,7 @@ UAsyncTaskGetAzureVoiceList* UAsyncTaskGetAzureVoiceList::GetAzureVoiceList(
 void UAsyncTaskGetAzureVoiceList::Start(const EAzureAuthenticationMethod AuthenticationMethod,
 	const FString AuthenticationValue, const FString Endpoint)
 {
-	UE_LOG(AzureTTS,Log,TEXT(__FUNCTION__));
+	 UE_LOG(AzureTTS, Log, TEXT("%s"), *FString(__FUNCTION__));
 	TSharedRef<IHttpRequest, ESPMode::ThreadSafe> HttpRequest = FHttpModule::Get().CreateRequest();
 
 	HttpRequest->OnProcessRequestComplete().BindUObject(this, &UAsyncTaskGetAzureVoiceList::HandleRequest);
@@ -49,7 +49,7 @@ void UAsyncTaskGetAzureVoiceList::Start(const EAzureAuthenticationMethod Authent
 void UAsyncTaskGetAzureVoiceList::HandleRequest(FHttpRequestPtr HttpRequest, FHttpResponsePtr HttpResponse,
 	bool bSuccess)
 {
-	UE_LOG(AzureTTS,Log,TEXT(__FUNCTION__));
+	 UE_LOG(AzureTTS, Log, TEXT("%s"), *FString(__FUNCTION__));
 	RemoveFromRoot();
 	TArray<FAzureSpeechVoiceInfomation> VoiceList;
 	if (!HttpResponse.IsValid())
